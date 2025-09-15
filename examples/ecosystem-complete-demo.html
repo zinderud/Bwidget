@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blicence Producer Ecosystem - Complete Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .demo-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .demo-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .demo-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .demo-header p {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .phase-indicator {
+            display: inline-flex;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .demo-nav {
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0;
+        }
+
+        .nav-tabs {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 16px 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .nav-tab:hover {
+            color: #334155;
+            background: #f1f5f9;
+        }
+
+        .nav-tab.active {
+            color: #1e40af;
+            border-bottom-color: #3b82f6;
+            background: white;
+        }
+
+        .demo-content {
+            padding: 0;
+        }
+
+        .demo-section {
+            display: none;
+            padding: 30px;
+            min-height: 600px;
+        }
+
+        .demo-section.active {
+            display: block;
+        }
+
+        .section-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .section-description {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .widget-container {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .config-panel {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .config-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .config-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+
+        .config-input {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .config-select {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .status-panel {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .status-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 6px;
+        }
+
+        .status-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #059669;
+            margin-bottom: 5px;
+        }
+
+        .status-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .demo-info {
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .demo-info h4 {
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+
+        .demo-info p {
+            color: #1e40af;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .demo-info ul {
+            color: #1e40af;
+            margin-left: 20px;
+        }
+
+        .demo-info li {
+            margin-bottom: 5px;
+        }
+
+        .progress-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .progress-step.completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .progress-step.active {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .step-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: 0.3;
+        }
+
+        .progress-step.completed .step-icon {
+            opacity: 1;
+        }
+
+        .progress-step.active .step-icon {
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .demo-container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+
+            .demo-header {
+                padding: 20px;
+            }
+
+            .demo-header h1 {
+                font-size: 24px;
+            }
+
+            .nav-tabs {
+                flex-wrap: nowrap;
+                padding: 0 10px;
+            }
+
+            .nav-tab {
+                padding: 12px 16px;
+                font-size: 12px;
+            }
+
+            .demo-section {
+                padding: 20px;
+            }
+
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .status-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <!-- Header -->
+        <div class="demo-header">
+            <h1>🚀 Blicence Producer Ecosystem</h1>
+            <p>Complete self-service platform for blockchain service management</p>
+            <div class="phase-indicator">
+                ✅ Faz 1 Tamamlandı | 🔥 Faz 2 Geliştiriliyor
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="demo-nav">
+            <ul class="nav-tabs">
+                <li><button class="nav-tab active" data-section="widget-sales">🛒 Sales Widget</button></li>
+                <li><button class="nav-tab" data-section="customer-dashboard">👥 Customer Dashboard</button></li>
+                <li><button class="nav-tab" data-section="service-access">🔐 Service Access</button></li>
+                <li><button class="nav-tab" data-section="analytics">📊 Analytics</button></li>
+                <li><button class="nav-tab" data-section="plan-management">📋 Plan Management</button></li>
+                <li><button class="nav-tab" data-section="integration">🔧 Integration</button></li>
+            </ul>
+        </nav>
+
+        <!-- Content Sections -->
+        <div class="demo-content">
+            <!-- Sales Widget Section -->
+            <div class="demo-section active" id="widget-sales">
+                <div class="section-header">
+                    <h2 class="section-title">Sales Widget (✅ Completed)</h2>
+                    <p class="section-description">
+                        Blockchain-powered plan sales widget with Factory pattern support and responsive UI
+                    </p>
+                </div>
+
+                <div class="progress-indicator">
+                    <div class="progress-step completed">
+                        <div class="step-icon"></div>
+                        Widget Infrastructure
+                    </div>
+                    <div class="progress-step completed">
+                        <div class="step-icon"></div>
+                        Producer Clone Detection
+                    </div>
+                    <div class="progress-step completed">
+                        <div class="step-icon"></div>
+                        UI/UX Implementation
+                    </div>
+                    <div class="progress-step completed">
+                        <div class="step-icon"></div>
+                        Testing & Demo
+                    </div>
+                </div>
+
+                <div class="demo-info">
+                    <h4>Sales Widget Features</h4>
+                    <ul>
+                        <li>Factory pattern support for Producer clone contracts</li>
+                        <li>Responsive UI with dark/light theme support</li>
+                        <li>Complete purchase flow with blockchain integration</li>
+                        <li>Error handling and retry mechanisms</li>
+                        <li>Real-time status updates and analytics integration</li>
+                    </ul>
+                </div>
+
+                <!-- Widget Configuration -->
+                <div class="config-panel">
+                    <h4 style="margin-bottom: 15px;">Widget Configuration</h4>
+                    <div class="config-grid">
+                        <div class="config-group">
+                            <label class="config-label">Producer Address</label>
+                            <input type="text" class="config-input" id="producerAddress" 
+                                   placeholder="0x1234..." value="0x742d35Cc6634C0532925a3b8D8d2C22dC9c4A9B1">
+                        </div>
+                        <div class="config-group">
+                            <label class="config-label">Network</label>
+                            <select class="config-select" id="network">
+                                <option value="polygon">Polygon</option>
+                                <option value="ethereum">Ethereum</option>
+                                <option value="arbitrum">Arbitrum</option>
+                            </select>
+                        </div>
+                        <div class="config-group">
+                            <label class="config-label">Theme</label>
+                            <select class="config-select" id="theme">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                            </select>
+                        </div>
+                        <div class="config-group">
+                            <label class="config-label">Language</label>
+                            <select class="config-select" id="language">
+                                <option value="tr">Turkish</option>
+                                <option value="en">English</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="initializeSalesWidget()">Initialize Widget</button>
+                </div>
+
+                <!-- Widget Container -->
+                <div class="widget-container">
+                    <div id="blicence-sales-widget"></div>
+                </div>
+
+                <!-- Status Panel -->
+                <div class="status-panel">
+                    <h4 style="margin-bottom: 15px;">Widget Status</h4>
+                    <div class="status-grid">
+                        <div class="status-item">
+                            <div class="status-value" id="widgetStatus">Ready</div>
+                            <div class="status-label">Status</div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-value" id="contractAddress">-</div>
+                            <div class="status-label">Contract</div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-value" id="plansLoaded">0</div>
+                            <div class="status-label">Plans Loaded</div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-value" id="networkStatus">Disconnected</div>
+                            <div class="status-label">Blockchain</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Dashboard Section -->
+            <div class="demo-section" id="customer-dashboard">
+                <div class="section-header">
+                    <h2 class="section-title">Customer Dashboard (🔥 Active Development)</h2>
+                    <p class="section-description">
+                        Self-service customer portal for plan management and service access
+                    </p>
+                </div>
+
+                <div class="progress-indicator">
+                    <div class="progress-step completed">
+                        <div class="step-icon"></div>
+                        Widget Infrastructure
+                    </div>
+                    <div class="progress-step active">
+                        <div class="step-icon"></div>
+                        Plan Management
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-icon"></div>
+                        Usage Analytics
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-icon"></div>
+                        Service Integration
+                    </div>
+                </div>
+
+                <div class="demo-info">
+                    <h4>Customer Dashboard Features</h4>
+                    <ul>
+                        <li>Active subscription management and renewal</li>
+                        <li>Real-time usage statistics and limits tracking</li>
+                        <li>NFT collection showcase for purchased plans</li>
+                        <li>API access management and key generation</li>
+                        <li>Support ticket system integration</li>
+                    </ul>
+                </div>
+
+                <!-- Dashboard Configuration -->
+                <div class="config-panel">
+                    <h4 style="margin-bottom: 15px;">Dashboard Configuration</h4>
+                    <div class="config-grid">
+                        <div class="config-group">
+                            <label class="config-label">Customer Address</label>
+                            <input type="text" class="config-input" id="customerAddress" 
+                                   placeholder="0x5678..." value="0x8ba1f109551bD432803012645Hac136c873c">
+                        </div>
+                        <div class="config-group">
+                            <label class="config-label">View Mode</label>
+                            <select class="config-select" id="dashboardMode">
+                                <option value="full">Full Dashboard</option>
+                                <option value="plans">Plans Only</option>
+                                <option value="usage">Usage Only</option>
+                            </select>
+                        </div>
+                        <div class="config-group">
+                            <label class="config-label">Show NFTs</label>
+                            <select class="config-select" id="showNFTs">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="initializeCustomerDashboard()">Initialize Dashboard</button>
+                </div>
+
+                <!-- Dashboard Container -->
+                <div class="widget-container">
+                    <div id="blicence-customer-dashboard"></div>
+                </div>
+            </div>
+
+            <!-- Service Access Section -->
+            <div class="demo-section" id="service-access">
+                <div class="section-header">
+                    <h2 class="section-title">Service Access Layer (🔥 Active Development)</h2>
+                    <p class="section-description">
+                        NFT & signature-based authentication for secure service access
+                    </p>
+                </div>
+
+                <div class="progress-indicator">
+                    <div class="progress-step completed">
+                        <div class="step-icon"></div>
+                        Authentication System
+                    </div>
+                    <div class="progress-step active">
+                        <div class="step-icon"></div>
+                        NFT Verification
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-icon"></div>
+                        API Gateway
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-icon"></div>
+                        Usage Tracking
+                    </div>
+                </div>
+
+                <div class="demo-info">
+                    <h4>Service Access Features</h4>
+                    <ul>
+                        <li>Multi-method authentication (NFT, signature, token gating)</li>
+                        <li>API key generation and JWT token management</li>
+                        <li>Real-time usage limits and quota enforcement</li>
+                        <li>Offline signature verification for distributed services</li>
+                        <li>Comprehensive access logging and analytics</li>
+                    </ul>
+                </div>
+
+                <!-- Access Test Panel -->
+                <div class="config-panel">
+                    <h4 style="margin-bottom: 15px;">Access Verification Test</h4>
+                    <div class="config-grid">
+                        <div class="config-group">
+                            <label class="config-label">Test Address</label>
+                            <input type="text" class="config-input" id="testAddress" 
+                                   placeholder="0x..." value="0x8ba1f109551bD432803012645Hac136c873c">
+                        </div>
+                        <div class="config-group">
+                            <label class="config-label">Plan ID</label>
+                            <input type="text" class="config-input" id="testPlanId" 
+                                   placeholder="plan_1" value="plan_premium">
+                        </div>
+                        <div class="config-group">
+                            <label class="config-label">Access Type</label>
+                            <select class="config-select" id="accessType">
+                                <option value="api">API Access</option>
+                                <option value="offline">Offline Signature</option>
+                                <option value="session">Session Token</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="testServiceAccess()">Test Access</button>
+                    <button class="btn btn-secondary" onclick="generateCredentials()">Generate Credentials</button>
+                </div>
+
+                <!-- Access Results -->
+                <div class="widget-container">
+                    <div id="service-access-results"></div>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div class="demo-section" id="analytics">
+                <div class="section-header">
+                    <h2 class="section-title">Producer Analytics (📋 Planned)</h2>
+                    <p class="section-description">
+                        Advanced analytics dashboard for sales, customers, and usage insights
+                    </p>
+                </div>
+
+                <div class="progress-indicator">
+                    <div class="progress-step">
+                        <div class="step-icon"></div>
+                        Data Collection
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-icon"></div>
+                        Chart Implementation
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-icon"></div>
+                        Real-time Updates
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-icon"></div>
+                        Export Features
+                    </div>
+                </div>
+
+                <div class="demo-info">
+                    <h4>Analytics Features (Coming Soon)</h4>
+                    <ul>
+                        <li>Revenue analytics with trend analysis</li>
+                        <li>Customer acquisition and churn metrics</li>
+                        <li>API usage patterns and performance monitoring</li>
+                        <li>Plan performance comparison and optimization</li>
+                        <li>Real-time dashboards with customizable widgets</li>
+                    </ul>
+                </div>
+
+                <!-- Analytics Preview -->
+                <div class="widget-container">
+                    <div id="blicence-analytics-preview">
+                        <div style="text-align: center; padding: 40px; color: #64748b;">
+                            <h3>Analytics Widget Preview</h3>
+                            <p>Complete analytics dashboard will be implemented in the next phase</p>
+                            <div style="margin-top: 20px;">
+                                <button class="btn btn-primary" onclick="previewAnalytics()">Preview Analytics</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plan Management Section -->
+            <div class="demo-section" id="plan-management">
+                <div class="section-header">
+                    <h2 class="section-title">Plan Management (📋 Planned)</h2>
+                    <p class="section-description">
+                        Complete plan creation, editing, and lifecycle management
+                    </p>
+                </div>
+
+                <div class="progress-indicator">
+                    <div class="progress-step">
+                        <div class="step-icon"></div>
+                        Plan Templates
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-icon"></div>
+                        Creation Interface
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-icon"></div>
+                        Bulk Operations
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-icon"></div>
+                        A/B Testing
+                    </div>
+                </div>
+
+                <div class="demo-info">
+                    <h4>Plan Management Features (Coming Soon)</h4>
+                    <ul>
+                        <li>Visual plan builder with templates</li>
+                        <li>Advanced pricing models and tiers</li>
+                        <li>Bulk operations for plan management</li>
+                        <li>A/B testing for plan optimization</li>
+                        <li>Integration with payment processors</li>
+                    </ul>
+                </div>
+
+                <!-- Plan Management Preview -->
+                <div class="widget-container">
+                    <div id="blicence-plan-management-preview">
+                        <div style="text-align: center; padding: 40px; color: #64748b;">
+                            <h3>Plan Management Preview</h3>
+                            <p>Advanced plan management interface will be implemented in the next phase</p>
+                            <div style="margin-top: 20px;">
+                                <button class="btn btn-primary" onclick="previewPlanManagement()">Preview Interface</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Integration Section -->
+            <div class="demo-section" id="integration">
+                <div class="section-header">
+                    <h2 class="section-title">Integration Guide</h2>
+                    <p class="section-description">
+                        How to integrate Blicence widgets into your website
+                    </p>
+                </div>
+
+                <div class="demo-info">
+                    <h4>Quick Integration</h4>
+                    <p>Add the Blicence ecosystem to your website in 3 simple steps:</p>
+                </div>
+
+                <div style="background: #1f2937; color: #f9fafb; border-radius: 8px; padding: 20px; margin-bottom: 20px; font-family: 'Courier New', monospace;">
+<pre style="margin: 0; white-space: pre-wrap;">
+<!-- Step 1: Include the scripts -->
+&lt;script src="https://cdn.blicence.com/blockchain-manager-v2.js">&lt;/script>
+&lt;script src="https://cdn.blicence.com/blicence-widget-sdk.js">&lt;/script>
+&lt;script src="https://cdn.blicence.com/customer-dashboard-widget.js">&lt;/script>
+&lt;script src="https://cdn.blicence.com/service-access-layer.js">&lt;/script>
+
+<!-- Step 2: Add containers -->
+&lt;div id="blicence-sales">&lt;/div>
+&lt;div id="blicence-dashboard">&lt;/div>
+
+<!-- Step 3: Initialize -->
+&lt;script>
+// Sales Widget
+const salesWidget = new BlicenceWidgetSDK({
+    producerAddress: 'YOUR_PRODUCER_ADDRESS',
+    network: 'polygon',
+    theme: 'light'
+});
+salesWidget.createWidget('blicence-sales');
+
+// Customer Dashboard
+const dashboard = new BlicenceCustomerDashboard({
+    producerAddress: 'YOUR_PRODUCER_ADDRESS',
+    customerAddress: 'CUSTOMER_ADDRESS'
+});
+dashboard.createWidget('blicence-dashboard');
+&lt;/script>
+</pre>
+                </div>
+
+                <div class="demo-info">
+                    <h4>Advanced Configuration</h4>
+                    <p>Customize the widgets with advanced options:</p>
+                    <ul>
+                        <li><strong>Theme Customization:</strong> Match your brand colors and styling</li>
+                        <li><strong>Multi-language Support:</strong> Built-in i18n for global audiences</li>
+                        <li><strong>Event Handling:</strong> Listen to purchase events and user interactions</li>
+                        <li><strong>Custom Analytics:</strong> Integrate with your existing analytics tools</li>
+                        <li><strong>Server-side Integration:</strong> Webhook support for backend processing</li>
+                    </ul>
+                </div>
+
+                <div class="config-panel">
+                    <h4 style="margin-bottom: 15px;">Test Integration</h4>
+                    <p style="margin-bottom: 15px; color: #64748b;">
+                        Use this configuration generator to create your integration code:
+                    </p>
+                    <div class="config-grid">
+                        <div class="config-group">
+                            <label class="config-label">Your Producer Address</label>
+                            <input type="text" class="config-input" id="yourProducerAddress" 
+                                   placeholder="0x...">
+                        </div>
+                        <div class="config-group">
+                            <label class="config-label">Preferred Network</label>
+                            <select class="config-select" id="preferredNetwork">
+                                <option value="polygon">Polygon</option>
+                                <option value="ethereum">Ethereum</option>
+                                <option value="arbitrum">Arbitrum</option>
+                            </select>
+                        </div>
+                        <div class="config-group">
+                            <label class="config-label">Widget Theme</label>
+                            <select class="config-select" id="widgetTheme">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                                <option value="auto">Auto</option>
+                            </select>
+                        </div>
+                        <div class="config-group">
+                            <label class="config-label">Language</label>
+                            <select class="config-select" id="widgetLanguage">
+                                <option value="tr">Turkish</option>
+                                <option value="en">English</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="generateIntegrationCode()">Generate Integration Code</button>
+                </div>
+
+                <div id="integration-code-output" style="display: none;">
+                    <!-- Generated code will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="blockchain-manager-v2.js"></script>
+    <script src="blicence-widget-sdk.js"></script>
+    <script src="customer-dashboard-widget.js"></script>
+    <script src="service-access-layer.js"></script>
+    <script src="producer-analytics-widget.js"></script>
+    <script src="plan-management-widget.js"></script>
+
+    <script>
+        // Global variables
+        let salesWidget = null;
+        let customerDashboard = null;
+        let serviceAccess = null;
+        let analytics = null;
+        let planManagement = null;
+
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navTabs = document.querySelectorAll('.nav-tab');
+            const sections = document.querySelectorAll('.demo-section');
+
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetSection = this.dataset.section;
+                    
+                    // Update active tab
+                    navTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update active section
+                    sections.forEach(s => s.classList.remove('active'));
+                    document.getElementById(targetSection).classList.add('active');
+                });
+            });
+        });
+
+        // Sales Widget Functions
+        async function initializeSalesWidget() {
+            try {
+                const producerAddress = document.getElementById('producerAddress').value;
+                const network = document.getElementById('network').value;
+                const theme = document.getElementById('theme').value;
+                const language = document.getElementById('language').value;
+
+                updateWidgetStatus('Initializing...');
+
+                salesWidget = new BlicenceWidgetSDK({
+                    producerAddress: producerAddress,
+                    network: network,
+                    theme: theme,
+                    language: language,
+                    debug: true
+                });
+
+                await salesWidget.createWidget('blicence-sales-widget', {
+                    showHeader: true,
+                    showPlanComparison: true,
+                    enablePurchase: true
+                });
+
+                updateWidgetStatus('Active');
+                updateContractAddress(producerAddress);
+                updateNetworkStatus('Connected');
+                
+                console.log('✅ Sales widget initialized successfully');
+
+            } catch (error) {
+                console.error('❌ Sales widget initialization failed:', error);
+                updateWidgetStatus('Error');
+            }
+        }
+
+        function updateWidgetStatus(status) {
+            document.getElementById('widgetStatus').textContent = status;
+        }
+
+        function updateContractAddress(address) {
+            document.getElementById('contractAddress').textContent = 
+                address ? `${address.substring(0, 6)}...${address.substring(address.length - 4)}` : '-';
+        }
+
+        function updateNetworkStatus(status) {
+            document.getElementById('networkStatus').textContent = status;
+        }
+
+        // Customer Dashboard Functions
+        async function initializeCustomerDashboard() {
+            try {
+                const customerAddress = document.getElementById('customerAddress').value;
+                const producerAddress = document.getElementById('producerAddress').value || '0x742d35Cc6634C0532925a3b8D8d2C22dC9c4A9B1';
+                const mode = document.getElementById('dashboardMode').value;
+                const showNFTs = document.getElementById('showNFTs').value === 'true';
+
+                customerDashboard = new BlicenceCustomerDashboard({
+                    producerAddress: producerAddress,
+                    customerAddress: customerAddress,
+                    network: 'polygon',
+                    theme: 'light'
+                });
+
+                await customerDashboard.createWidget('blicence-customer-dashboard', {
+                    mode: mode,
+                    showNFTs: showNFTs,
+                    showUsageStats: true,
+                    showApiAccess: true
+                });
+
+                console.log('✅ Customer dashboard initialized successfully');
+
+            } catch (error) {
+                console.error('❌ Customer dashboard initialization failed:', error);
+            }
+        }
+
+        // Service Access Functions
+        async function testServiceAccess() {
+            try {
+                const testAddress = document.getElementById('testAddress').value;
+                const planId = document.getElementById('testPlanId').value;
+                const accessType = document.getElementById('accessType').value;
+
+                if (!serviceAccess) {
+                    serviceAccess = new BlicenceServiceAccess({
+                        producerAddress: '0x742d35Cc6634C0532925a3b8D8d2C22dC9c4A9B1',
+                        network: 'polygon'
+                    });
+                    await serviceAccess.initialize();
+                }
+
+                const result = await serviceAccess.verifyAccess(testAddress, planId, accessType);
+                
+                displayAccessResults(result);
+                console.log('🔐 Access verification result:', result);
+
+            } catch (error) {
+                console.error('❌ Access verification failed:', error);
+                displayAccessResults({ error: error.message });
+            }
+        }
+
+        async function generateCredentials() {
+            try {
+                const testAddress = document.getElementById('testAddress').value;
+                const planId = document.getElementById('testPlanId').value;
+                const accessType = document.getElementById('accessType').value;
+
+                if (!serviceAccess) {
+                    serviceAccess = new BlicenceServiceAccess({
+                        producerAddress: '0x742d35Cc6634C0532925a3b8D8d2C22dC9c4A9B1',
+                        network: 'polygon'
+                    });
+                    await serviceAccess.initialize();
+                }
+
+                const credentials = await serviceAccess.generateAccessCredentials(testAddress, planId, accessType);
+                
+                displayAccessResults({ 
+                    granted: true, 
+                    credentials: credentials,
+                    message: 'Credentials generated successfully'
+                });
+                console.log('🔑 Generated credentials:', credentials);
+
+            } catch (error) {
+                console.error('❌ Credential generation failed:', error);
+                displayAccessResults({ error: error.message });
+            }
+        }
+
+        function displayAccessResults(result) {
+            const container = document.getElementById('service-access-results');
+            
+            if (result.error) {
+                container.innerHTML = `
+                    <div style="background: #fee; border: 1px solid #fcc; border-radius: 6px; padding: 20px; color: #c33;">
+                        <h4>❌ Error</h4>
+                        <p>${result.error}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const isGranted = result.granted;
+            const bgColor = isGranted ? '#efe' : '#ffe';
+            const borderColor = isGranted ? '#cfc' : '#ffc';
+            const textColor = isGranted ? '#060' : '#cc0';
+            const icon = isGranted ? '✅' : '⚠️';
+
+            container.innerHTML = `
+                <div style="background: ${bgColor}; border: 1px solid ${borderColor}; border-radius: 6px; padding: 20px; color: ${textColor};">
+                    <h4>${icon} Access ${isGranted ? 'Granted' : 'Denied'}</h4>
+                    ${result.message ? `<p>${result.message}</p>` : ''}
+                    ${result.credentials ? `
+                        <h5>Generated Credentials:</h5>
+                        <pre style="background: rgba(0,0,0,0.1); padding: 10px; border-radius: 4px; overflow-x: auto;">
+${JSON.stringify(result.credentials, null, 2)}</pre>
+                    ` : ''}
+                    ${result.verification ? `
+                        <h5>Verification Details:</h5>
+                        <ul>
+                            <li>Subscription: ${result.verification.methods.subscription?.valid ? '✅' : '❌'}</li>
+                            <li>Usage Limits: ${result.verification.methods.usage?.valid ? '✅' : '❌'}</li>
+                            <li>NFT Ownership: ${result.verification.methods.nft?.valid ? '✅' : '❌'}</li>
+                        </ul>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Analytics Functions
+        function previewAnalytics() {
+            const container = document.getElementById('blicence-analytics-preview');
+            
+            analytics = new BlicenceProducerAnalytics({
+                producerAddress: '0x742d35Cc6634C0532925a3b8D8d2C22dC9c4A9B1',
+                network: 'polygon',
+                realTimeAnalytics: true
+            });
+
+            analytics.createWidget('blicence-analytics-preview', {
+                theme: 'light',
+                sections: ['overview', 'sales', 'customers', 'usage'],
+                timeRange: '30d'
+            });
+
+            console.log('📊 Analytics preview loaded');
+        }
+
+        // Plan Management Functions
+        function previewPlanManagement() {
+            const container = document.getElementById('blicence-plan-management-preview');
+            
+            planManagement = new BlicencePlanManagement({
+                producerAddress: '0x742d35Cc6634C0532925a3b8D8d2C22dC9c4A9B1',
+                network: 'polygon'
+            });
+
+            planManagement.createWidget('blicence-plan-management-preview', {
+                theme: 'light',
+                mode: 'manage',
+                allowBulkOperations: true,
+                useTemplates: true
+            });
+
+            console.log('📋 Plan management preview loaded');
+        }
+
+        // Integration Functions
+        function generateIntegrationCode() {
+            const producerAddress = document.getElementById('yourProducerAddress').value;
+            const network = document.getElementById('preferredNetwork').value;
+            const theme = document.getElementById('widgetTheme').value;
+            const language = document.getElementById('widgetLanguage').value;
+
+            if (!producerAddress) {
+                alert('Please enter your Producer address');
+                return;
+            }
+
+            const integrationCode = `
+<!-- Blicence Widget Integration -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blicence Integration</title>
+</head>
+<body>
+    <!-- Widget Containers -->
+    <div id="blicence-sales"></div>
+    <div id="blicence-dashboard"></div>
+
+    <!-- Blicence Scripts -->
+    <script src="https://cdn.blicence.com/blockchain-manager-v2.js"></script>
+    <script src="https://cdn.blicence.com/blicence-widget-sdk.js"></script>
+    <script src="https://cdn.blicence.com/customer-dashboard-widget.js"></script>
+    <script src="https://cdn.blicence.com/service-access-layer.js"></script>
+
+    <script>
+        // Initialize Sales Widget
+        const salesWidget = new BlicenceWidgetSDK({
+            producerAddress: '${producerAddress}',
+            network: '${network}',
+            theme: '${theme}',
+            language: '${language}',
+            debug: false
+        });
+
+        salesWidget.createWidget('blicence-sales', {
+            showHeader: true,
+            showPlanComparison: true,
+            enablePurchase: true
+        });
+
+        // Initialize Customer Dashboard (when customer is logged in)
+        function initializeCustomerDashboard(customerAddress) {
+            const dashboard = new BlicenceCustomerDashboard({
+                producerAddress: '${producerAddress}',
+                customerAddress: customerAddress,
+                network: '${network}',
+                theme: '${theme}'
+            });
+
+            dashboard.createWidget('blicence-dashboard', {
+                mode: 'full',
+                showNFTs: true,
+                showUsageStats: true,
+                showApiAccess: true
+            });
+        }
+
+        // Event Listeners
+        salesWidget.on('purchase_completed', (event) => {
+            console.log('Purchase completed:', event);
+            // Handle successful purchase
+            // Refresh customer dashboard, send welcome email, etc.
+        });
+
+        salesWidget.on('purchase_failed', (event) => {
+            console.log('Purchase failed:', event);
+            // Handle failed purchase
+            // Show error message, retry options, etc.
+        });
+    </script>
+</body>
+</html>
+            `;
+
+            const outputContainer = document.getElementById('integration-code-output');
+            outputContainer.style.display = 'block';
+            outputContainer.innerHTML = `
+                <div style="background: #1f2937; color: #f9fafb; border-radius: 8px; padding: 20px; margin-top: 20px; font-family: 'Courier New', monospace; position: relative;">
+                    <button onclick="copyToClipboard()" style="position: absolute; top: 10px; right: 10px; background: #374151; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+                        Copy Code
+                    </button>
+                    <pre style="margin: 0; white-space: pre-wrap; padding-top: 30px;">${integrationCode}</pre>
+                </div>
+            `;
+
+            console.log('🔧 Integration code generated');
+        }
+
+        function copyToClipboard() {
+            const codeText = document.querySelector('#integration-code-output pre').textContent;
+            navigator.clipboard.writeText(codeText).then(() => {
+                alert('Integration code copied to clipboard!');
+            });
+        }
+
+        // Initialize first widget on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-initialize sales widget with demo data
+            setTimeout(() => {
+                initializeSalesWidget();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

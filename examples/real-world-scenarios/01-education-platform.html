@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeMaster Academy - Online Eğitim Platformu</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #667eea;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+        
+        .pricing-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 80px 0;
+            margin: 60px 0;
+            border-radius: 24px;
+        }
+        
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .pricing-header h2 {
+            font-size: 2.5rem;
+            color: #2d3748;
+            margin-bottom: 16px;
+        }
+        
+        .pricing-header p {
+            font-size: 1.1rem;
+            color: #718096;
+        }
+        
+        .blicence-widget-container {
+            margin: 40px auto;
+            max-width: 900px;
+        }
+        
+        .testimonials {
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .testimonials h2 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 50px;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .testimonial-text {
+            font-size: 1.1rem;
+            color: white;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        .testimonial-author {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+        
+        .footer {
+            background: rgba(45, 55, 72, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 40px 0;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">
+                    <div class="logo-icon">CM</div>
+                    CodeMaster Academy
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#courses">Kurslar</a></li>
+                    <li><a href="#pricing">Fiyatlar</a></li>
+                    <li><a href="#about">Hakkımızda</a></li>
+                    <li><a href="#contact">İletişim</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Modern Yazılım Geliştirme Öğrenin</h1>
+            <p>150+ video ders, canlı yayınlar ve uzman eğitmenlerle yazılım dünyasında öne çıkın</p>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">🎥</div>
+                    <h3>150+ Video Ders</h3>
+                    <p>React, Node.js, Python, AI/ML ve daha fazlası</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Canlı Yayınlar</h3>
+                    <p>Haftalık Q&A seansları ve kodlama atölyeleri</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Sertifika Programı</h3>
+                    <p>Blockchain tabanlı başarı sertifikaları</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Topluluk</h3>
+                    <p>5000+ aktif öğrenci ile networking</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section with Blicence Widget -->
+    <section class="pricing-section" id="pricing">
+        <div class="container">
+            <div class="pricing-header">
+                <h2>Öğrenmeye Bugün Başlayın</h2>
+                <p>Blockchain teknolojisi ile güvenli ödeme, istediğiniz zaman iptal edebilirsiniz</p>
+            </div>
+            
+            <!-- Blicence Widget Integration -->
+            <div class="blicence-widget-container">
+                <div 
+                    data-producer="0x742d35Cc6634C0532925a3b8D563d7EFF3C74bA6"
+                    data-layout="grid"
+                    data-theme="light"
+                    data-primary-color="#667eea"
+                    data-show-description="true"
+                    data-show-features="true"
+                    data-title="CodeMaster Academy Planları"
+                    data-producer-name="CodeMaster Academy"
+                    data-network="polygon"
+                ></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <h2>Öğrenci Yorumları</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        "CodeMaster sayesinde React öğrendim ve şimdi full-stack developer olarak çalışıyorum. Blockchain ödemeler gerçekten güvenli!"
+                    </div>
+                    <div class="testimonial-author">- Ayşe Y., Frontend Developer</div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        "Canlı yayınlarda soru sorabilmek harika. Eğitmenler çok deneyimli ve her zaman yardımcı olmaya hazırlar."
+                    </div>
+                    <div class="testimonial-author">- Mehmet K., Backend Developer</div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        "Aylık ödeme sistemi bütçeme çok uygun. İstediğim zaman durdurabiliyor olmak büyük avantaj."
+                    </div>
+                    <div class="testimonial-author">- Elif T., Öğrenci</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 CodeMaster Academy. Tüm hakları saklıdır. | Powered by Blicence</p>
+        </div>
+    </footer>
+
+    <!-- Blicence Widget Script -->
+    <script src="https://cdn.blicence.com/bundles/blicence-sales-widget.min.js"></script>
+    
+    <script>
+        // Widget yüklendiğinde özel event listeners
+        window.addEventListener('blicence:loaded', function(event) {
+            console.log('🚀 CodeMaster widget yüklendi:', event.detail);
+            
+            // Google Analytics integration
+            if (window.gtag) {
+                gtag('event', 'widget_loaded', {
+                    'custom_parameter': 'codemaster_academy'
+                });
+            }
+        });
+
+        // Plan seçimi event listener
+        document.addEventListener('blicence:planSelected', function(event) {
+            const plan = event.detail;
+            console.log('📋 Plan seçildi:', plan.name);
+            
+            // Conversion tracking
+            if (window.gtag) {
+                gtag('event', 'plan_selected', {
+                    'plan_id': plan.id,
+                    'plan_name': plan.name,
+                    'plan_price': plan.price
+                });
+            }
+        });
+
+        // Satın alma başlangıcı
+        document.addEventListener('blicence:purchaseStart', function(event) {
+            const plan = event.detail;
+            console.log('💳 Satın alma başladı:', plan.name);
+            
+            // Show loading state on page
+            document.body.style.cursor = 'wait';
+        });
+
+        // Satın alma tamamlandı
+        document.addEventListener('blicence:purchaseComplete', function(event) {
+            const { plan, txHash } = event.detail;
+            console.log('✅ Satın alma tamamlandı!', plan.name, txHash);
+            
+            document.body.style.cursor = 'default';
+            
+            // Show success message
+            alert(`🎉 Tebrikler! ${plan.name} planına başarıyla abone oldunuz!\n\nTransaction: ${txHash.substring(0, 10)}...`);
+            
+            // Redirect to course dashboard
+            setTimeout(() => {
+                window.location.href = '/dashboard?welcome=true';
+            }, 2000);
+        });
+
+        // Hata durumu
+        document.addEventListener('blicence:error', function(event) {
+            const error = event.detail;
+            console.error('❌ Widget hatası:', error);
+            
+            document.body.style.cursor = 'default';
+            alert('Bir hata oluştu: ' + error.message);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blicence Widget - Test Playground</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: #f8fafc;
+            color: #2d3748;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            min-height: 600px;
+        }
+        
+        .controls-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .preview-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-height: 600px;
+        }
+        
+        .control-group {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .control-group:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .control-group h3 {
+            color: #4a5568;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0 0 15px 0;
+            font-weight: 600;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            margin-bottom: 10px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: #667eea;
+        }
+        
+        .checkbox-group label {
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+        }
+        
+        .radio-option input[type="radio"] {
+            margin-right: 8px;
+            accent-color: #667eea;
+        }
+        
+        .radio-option label {
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .color-input {
+            width: 100%;
+            height: 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .apply-button {
+            width: 100%;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .apply-button:hover {
+            background: #5a67d8;
+        }
+        
+        .preview-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .preview-title {
+            color: #2d3748;
+            margin: 0;
+        }
+        
+        .widget-container {
+            min-height: 400px;
+            border: 2px dashed #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            background: #f7fafc;
+            transition: all 0.3s ease;
+        }
+        
+        .widget-container.has-widget {
+            border-style: solid;
+            border-color: #667eea;
+            background: white;
+        }
+        
+        .generated-code {
+            margin-top: 30px;
+            background: #1a202c;
+            color: #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 13px;
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .copy-button {
+            background: #4a5568;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .copy-button:hover {
+            background: #2d3748;
+        }
+        
+        .log-panel {
+            margin-top: 30px;
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 12px;
+        }
+        
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 5px 8px;
+            border-radius: 4px;
+        }
+        
+        .log-entry.info {
+            background: #bee3f8;
+            color: #2b6cb0;
+        }
+        
+        .log-entry.success {
+            background: #c6f6d5;
+            color: #276749;
+        }
+        
+        .log-entry.error {
+            background: #fed7d7;
+            color: #c53030;
+        }
+        
+        .device-simulator {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .device-button {
+            padding: 8px 16px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .device-button.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+        
+        .device-button:hover {
+            border-color: #667eea;
+        }
+        
+        .mobile-preview {
+            max-width: 375px;
+            margin: 0 auto;
+        }
+        
+        .tablet-preview {
+            max-width: 768px;
+            margin: 0 auto;
+        }
+        
+        .desktop-preview {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🧪 Blicence Widget Test Playground</h1>
+            <p>Widget'ınızı farklı konfigürasyonlar ile test edin ve kodunuzu oluşturun</p>
+        </div>
+
+        <div class="main-grid">
+            <!-- Controls Panel -->
+            <div class="controls-panel">
+                <!-- Basic Configuration -->
+                <div class="control-group">
+                    <h3>📋 Temel Ayarlar</h3>
+                    <input type="text" id="producerAddress" class="form-control" 
+                           placeholder="Producer Address" 
+                           value="0x742d35Cc6634C0532925a3b8D563d7EFF3C74bA6">
+                    
+                    <select id="network" class="form-control">
+                        <option value="polygon">Polygon</option>
+                        <option value="ethereum">Ethereum</option>
+                        <option value="arbitrum">Arbitrum</option>
+                    </select>
+                </div>
+
+                <!-- Layout Options -->
+                <div class="control-group">
+                    <h3>🎨 Layout</h3>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" name="layout" value="grid" id="layout-grid" checked>
+                            <label for="layout-grid">Grid</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="layout" value="list" id="layout-list">
+                            <label for="layout-list">List</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="layout" value="card" id="layout-card">
+                            <label for="layout-card">Card</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Theme -->
+                <div class="control-group">
+                    <h3>🌙 Tema</h3>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" name="theme" value="light" id="theme-light" checked>
+                            <label for="theme-light">Light</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="theme" value="dark" id="theme-dark">
+                            <label for="theme-dark">Dark</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="theme" value="auto" id="theme-auto">
+                            <label for="theme-auto">Auto</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colors -->
+                <div class="control-group">
+                    <h3>🎨 Renkler</h3>
+                    <label for="primaryColor" style="font-size: 12px; display: block; margin-bottom: 5px;">Primary Color</label>
+                    <input type="color" id="primaryColor" class="color-input" value="#667eea">
+                    
+                    <label for="secondaryColor" style="font-size: 12px; display: block; margin: 10px 0 5px 0;">Secondary Color</label>
+                    <input type="color" id="secondaryColor" class="color-input" value="#764ba2">
+                </div>
+
+                <!-- Display Options -->
+                <div class="control-group">
+                    <h3>👁️ Görünüm</h3>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="showDescription" checked>
+                        <label for="showDescription">Açıklamaları Göster</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="showFeatures" checked>
+                        <label for="showFeatures">Özellikleri Göster</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="showPricing" checked>
+                        <label for="showPricing">Fiyatları Göster</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="showBuyButton" checked>
+                        <label for="showBuyButton">Satın Al Butonu</label>
+                    </div>
+                </div>
+
+                <!-- Animation -->
+                <div class="control-group">
+                    <h3>✨ Animasyon</h3>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="enableAnimations" checked>
+                        <label for="enableAnimations">Animasyonları Etkinleştir</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="loadingSpinner" checked>
+                        <label for="loadingSpinner">Loading Spinner</label>
+                    </div>
+                </div>
+
+                <button class="apply-button" onclick="updateWidget()">
+                    🔄 Widget'ı Güncelle
+                </button>
+            </div>
+
+            <!-- Preview Panel -->
+            <div class="preview-panel">
+                <div class="preview-header">
+                    <h2 class="preview-title">📱 Preview</h2>
+                    <div class="device-simulator">
+                        <button class="device-button active" onclick="setDevice('desktop')">🖥️ Desktop</button>
+                        <button class="device-button" onclick="setDevice('tablet')">📱 Tablet</button>
+                        <button class="device-button" onclick="setDevice('mobile')">📱 Mobile</button>
+                    </div>
+                </div>
+
+                <div id="widgetContainer" class="widget-container desktop-preview">
+                    <div style="text-align: center; color: #a0aec0; margin-top: 50px;">
+                        <h3>Widget burada görünecek</h3>
+                        <p>Ayarları yapılandırın ve "Widget'ı Güncelle" butonuna tıklayın</p>
+                    </div>
+                </div>
+
+                <!-- Generated Code -->
+                <div class="generated-code">
+                    <div class="code-header">
+                        <h4 style="margin: 0; color: #e2e8f0;">📄 Oluşturulan Kod</h4>
+                        <button class="copy-button" onclick="copyCode()">📋 Kopyala</button>
+                    </div>
+                    <pre id="generatedCode"><code>// Widget ayarları yapılandırıldıktan sonra kod burada görünecek</code></pre>
+                </div>
+
+                <!-- Event Log -->
+                <div class="log-panel">
+                    <h4 style="margin: 0 0 15px 0; color: #4a5568;">📊 Event Log</h4>
+                    <div id="eventLog">
+                        <div class="log-entry info">💡 Widget playground hazır</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Widget configuration
+        let currentConfig = {
+            producerAddress: '0x742d35Cc6634C0532925a3b8D563d7EFF3C74bA6',
+            network: 'polygon',
+            layout: 'grid',
+            theme: 'light',
+            primaryColor: '#667eea',
+            secondaryColor: '#764ba2',
+            showDescription: true,
+            showFeatures: true,
+            showPricing: true,
+            showBuyButton: true,
+            enableAnimations: true,
+            loadingSpinner: true
+        };
+
+        // Device simulation
+        function setDevice(deviceType) {
+            const container = document.getElementById('widgetContainer');
+            const buttons = document.querySelectorAll('.device-button');
+            
+            // Update button states
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update container class
+            container.className = `widget-container ${deviceType}-preview has-widget`;
+            
+            logEvent('info', `📱 Device changed to ${deviceType}`);
+        }
+
+        // Update widget configuration
+        function updateWidget() {
+            // Get current form values
+            currentConfig = {
+                producerAddress: document.getElementById('producerAddress').value,
+                network: document.getElementById('network').value,
+                layout: document.querySelector('input[name="layout"]:checked').value,
+                theme: document.querySelector('input[name="theme"]:checked').value,
+                primaryColor: document.getElementById('primaryColor').value,
+                secondaryColor: document.getElementById('secondaryColor').value,
+                showDescription: document.getElementById('showDescription').checked,
+                showFeatures: document.getElementById('showFeatures').checked,
+                showPricing: document.getElementById('showPricing').checked,
+                showBuyButton: document.getElementById('showBuyButton').checked,
+                enableAnimations: document.getElementById('enableAnimations').checked,
+                loadingSpinner: document.getElementById('loadingSpinner').checked
+            };
+
+            // Generate widget HTML
+            generateWidget();
+            
+            // Generate code
+            generateCode();
+            
+            logEvent('success', '✅ Widget güncellendi');
+        }
+
+        // Generate widget HTML
+        function generateWidget() {
+            const container = document.getElementById('widgetContainer');
+            container.classList.add('has-widget');
+            
+            // Create mock widget
+            const widgetHTML = `
+                <div style="
+                    background: ${currentConfig.theme === 'dark' ? '#2d3748' : 'white'};
+                    color: ${currentConfig.theme === 'dark' ? 'white' : '#2d3748'};
+                    border-radius: 12px;
+                    padding: 20px;
+                    border: 2px solid ${currentConfig.primaryColor};
+                    ${currentConfig.enableAnimations ? 'transition: all 0.3s ease;' : ''}
+                ">
+                    <h3 style="color: ${currentConfig.primaryColor}; margin-top: 0;">🚀 Blicence Plans</h3>
+                    
+                    <div style="display: ${currentConfig.layout === 'grid' ? 'grid' : 'flex'}; 
+                               ${currentConfig.layout === 'grid' ? 'grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));' : 'flex-direction: column;'}
+                               gap: 15px;">
+                        
+                        ${generateMockPlan('Basic Plan', '10 USDC', ['Feature 1', 'Feature 2'])}
+                        ${generateMockPlan('Premium Plan', '25 USDC', ['All Basic features', 'Premium Feature 1', 'Premium Feature 2'])}
+                        ${generateMockPlan('Pro Plan', '50 USDC', ['All Premium features', 'Pro Feature 1', 'Pro Feature 2', 'Priority Support'])}
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding: 15px; background: ${currentConfig.primaryColor}15; border-radius: 8px; text-align: center;">
+                        <small style="color: ${currentConfig.primaryColor};">
+                            🔒 Güvenli blockchain ödemeleri • ⚡ Anında aktivasyon
+                        </small>
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = widgetHTML;
+        }
+
+        // Generate mock plan
+        function generateMockPlan(name, price, features) {
+            return `
+                <div style="
+                    background: ${currentConfig.theme === 'dark' ? '#4a5568' : '#f7fafc'};
+                    border-radius: 8px;
+                    padding: 15px;
+                    border: 1px solid ${currentConfig.primaryColor}30;
+                    ${currentConfig.enableAnimations ? 'transition: transform 0.3s ease;' : ''}
+                " onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                    <h4 style="margin: 0 0 8px 0; color: ${currentConfig.primaryColor};">${name}</h4>
+                    
+                    ${currentConfig.showDescription ? `<p style="margin: 0 0 10px 0; font-size: 14px; opacity: 0.8;">Great plan for getting started</p>` : ''}
+                    
+                    ${currentConfig.showPricing ? `<div style="font-size: 18px; font-weight: bold; color: ${currentConfig.primaryColor}; margin-bottom: 10px;">${price}</div>` : ''}
+                    
+                    ${currentConfig.showFeatures ? `
+                        <ul style="list-style: none; padding: 0; margin: 10px 0; font-size: 13px;">
+                            ${features.map(feature => `<li style="margin-bottom: 4px;">✨ ${feature}</li>`).join('')}
+                        </ul>
+                    ` : ''}
+                    
+                    ${currentConfig.showBuyButton ? `
+                        <button style="
+                            width: 100%;
+                            background: ${currentConfig.primaryColor};
+                            color: white;
+                            border: none;
+                            padding: 8px 12px;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-size: 14px;
+                            ${currentConfig.enableAnimations ? 'transition: background-color 0.3s ease;' : ''}
+                        " onclick="logEvent('success', '🛒 ${name} seçildi')">
+                            Satın Al
+                        </button>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Generate code
+        function generateCode() {
+            const htmlCode = `<!-- Blicence Widget HTML -->
+<div 
+    data-producer="${currentConfig.producerAddress}"
+    data-network="${currentConfig.network}"
+    data-layout="${currentConfig.layout}"
+    data-theme="${currentConfig.theme}"
+    data-primary-color="${currentConfig.primaryColor}"
+    data-secondary-color="${currentConfig.secondaryColor}"
+    data-show-description="${currentConfig.showDescription}"
+    data-show-features="${currentConfig.showFeatures}"
+    data-show-pricing="${currentConfig.showPricing}"
+    data-show-buy-button="${currentConfig.showBuyButton}"
+    data-enable-animations="${currentConfig.enableAnimations}"
+    data-loading-spinner="${currentConfig.loadingSpinner}"
+></div>
+
+<!-- Blicence Widget Script -->
+<script src="https://cdn.blicence.com/bundles/blicence-sales-widget.min.js"><\/script>
+
+<!-- Event Listeners (Opsiyonel) -->
+<script>
+document.addEventListener('blicence:planSelected', function(event) {
+    console.log('Plan seçildi:', event.detail);
+});
+
+document.addEventListener('blicence:purchaseComplete', function(event) {
+    console.log('Satın alma tamamlandı:', event.detail);
+});
+
+document.addEventListener('blicence:error', function(event) {
+    console.error('Hata:', event.detail);
+});
+<\/script>`;
+
+            document.getElementById('generatedCode').textContent = htmlCode;
+        }
+
+        // Copy generated code
+        function copyCode() {
+            const code = document.getElementById('generatedCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                logEvent('success', '📋 Kod kopyalandı');
+            }).catch(() => {
+                logEvent('error', '❌ Kod kopyalanamadı');
+            });
+        }
+
+        // Log events
+        function logEvent(type, message) {
+            const logContainer = document.getElementById('eventLog');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+
+            // Keep only last 20 entries
+            const entries = logContainer.querySelectorAll('.log-entry');
+            if (entries.length > 20) {
+                entries[0].remove();
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateWidget();
+            logEvent('info', '🚀 Test playground yüklendi');
+        });
+
+        // Real-time updates on input changes
+        document.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('change', function() {
+                setTimeout(updateWidget, 100); // Small delay for better UX
+            });
+        });
+
+        console.log('🧪 Blicence Widget Test Playground loaded!');
+    </script>
+</body>
+</html>

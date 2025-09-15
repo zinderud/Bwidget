@@ -1,0 +1,80 @@
+{
+  "name": "blicence-producer-ecosystem",
+  "version": "1.0.0",
+  "description": "Complete self-service platform for blockchain service management",
+  "main": "src/widgets/blicence-widget-sdk.js",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "build": "npm run build:clean && npm run build:bundle && npm run build:minify",
+    "build:clean": "rm -rf dist && mkdir -p dist",
+    "build:bundle": "node scripts/build.js",
+    "build:minify": "node scripts/minify.js",
+    "build:docs": "node scripts/docs.js",
+    "test": "node scripts/test.js",
+    "lint": "node scripts/lint.js",
+    "serve": "python -m http.server 8000 --directory dist",
+    "dev:watch": "node scripts/watch.js",
+    "analyze": "node scripts/analyze.js"
+  },
+  "keywords": [
+    "blockchain",
+    "web3",
+    "widget",
+    "producer",
+    "ecosystem",
+    "defi",
+    "nft",
+    "subscription",
+    "payments",
+    "self-service"
+  ],
+  "author": "Blicence Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blicence/Bwidget.git"
+  },
+  "bugs": {
+    "url": "https://github.com/blicence/Bwidget/issues"
+  },
+  "homepage": "https://github.com/blicence/Bwidget#readme",
+  "files": [
+    "src/",
+    "docs/",
+    "examples/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "terser": "^5.19.4",
+    "rollup": "^3.29.4",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-terser": "^0.4.4",
+    "fs-extra": "^11.1.1",
+    "chokidar": "^3.5.3"
+  },
+  "peerDependencies": {
+    "ethers": "^5.7.0"
+  },
+  "config": {
+    "cdn": {
+      "base": "https://cdn.blicence.com",
+      "version": "1.0.0"
+    },
+    "build": {
+      "minify": true,
+      "sourcemap": true,
+      "target": "es6"
+    }
+  }
+}

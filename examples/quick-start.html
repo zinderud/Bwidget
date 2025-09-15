@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blicence Producer Quick Start</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .quick-setup {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .setup-step {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .setup-step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .step-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .step-description {
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+
+        .config-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+
+        .form-input {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .widget-container {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 300px;
+        }
+
+        .code-block {
+            background: #1f2937;
+            color: #f9fafb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+
+        .success-message {
+            background: #dcfce7;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            color: #1e40af;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .info-box h4 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+        }
+
+        .info-box li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Blicence Producer Quick Start</h1>
+            <p>Set up your blockchain service platform in minutes</p>
+        </div>
+
+        <div class="content">
+            <div class="quick-setup">
+                <div class="setup-step">
+                    <div style="display: flex; align-items: flex-start;">
+                        <span class="step-number">1</span>
+                        <div style="flex: 1;">
+                            <h3 class="step-title">Configure Your Producer Settings</h3>
+                            <p class="step-description">Enter your Producer contract address and network preferences</p>
+                            
+                            <div class="config-form">
+                                <div class="form-group">
+                                    <label class="form-label">Producer Contract Address</label>
+                                    <input type="text" class="form-input" id="producerAddress" 
+                                           placeholder="0x..." value="0x742d35Cc6634C0532925a3b8D8d2C22dC9c4A9B1">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Network</label>
+                                    <select class="form-input" id="network">
+                                        <option value="polygon">Polygon</option>
+                                        <option value="ethereum">Ethereum</option>
+                                        <option value="arbitrum">Arbitrum</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Theme</label>
+                                    <select class="form-input" id="theme">
+                                        <option value="light">Light</option>
+                                        <option value="dark">Dark</option>
+                                        <option value="auto">Auto</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-step">
+                    <div style="display: flex; align-items: flex-start;">
+                        <span class="step-number">2</span>
+                        <div style="flex: 1;">
+                            <h3 class="step-title">Initialize Your Sales Widget</h3>
+                            <p class="step-description">Create a blockchain-powered sales widget for your services</p>
+                            
+                            <button class="btn btn-primary" onclick="initializeSalesWidget()">
+                                Initialize Sales Widget
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-step">
+                    <div style="display: flex; align-items: flex-start;">
+                        <span class="step-number">3</span>
+                        <div style="flex: 1;">
+                            <h3 class="step-title">Get Integration Code</h3>
+                            <p class="step-description">Copy the code to integrate into your website</p>
+                            
+                            <button class="btn btn-primary" onclick="generateIntegrationCode()">
+                                Generate Code
+                            </button>
+                            
+                            <div id="integration-code" style="display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h4>🎯 What You'll Get:</h4>
+                <ul>
+                    <li>Complete sales widget for blockchain services</li>
+                    <li>Automated subscription management</li>
+                    <li>Real-time payment processing</li>
+                    <li>Customer self-service portal</li>
+                    <li>Analytics and reporting dashboard</li>
+                </ul>
+            </div>
+
+            <!-- Widget Container -->
+            <div class="widget-container" id="sales-widget-container">
+                <div style="text-align: center; padding: 40px; color: #64748b;">
+                    <h3>Your Sales Widget Will Appear Here</h3>
+                    <p>Click "Initialize Sales Widget" above to see your live widget</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../src/core/blockchain-manager-v2.js"></script>
+    <script src="../src/widgets/blicence-widget-sdk.js"></script>
+    <script src="../src/blicence-ecosystem.js"></script>
+
+    <script>
+        let ecosystem = null;
+
+        async function initializeSalesWidget() {
+            try {
+                const producerAddress = document.getElementById('producerAddress').value;
+                const network = document.getElementById('network').value;
+                const theme = document.getElementById('theme').value;
+
+                if (!producerAddress) {
+                    alert('Please enter your Producer contract address');
+                    return;
+                }
+
+                // Show loading state
+                const container = document.getElementById('sales-widget-container');
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <div style="margin-bottom: 20px;">🔄 Initializing your sales widget...</div>
+                        <div style="color: #64748b;">This may take a few seconds</div>
+                    </div>
+                `;
+
+                // Initialize ecosystem
+                ecosystem = new BlicenceEcosystem({
+                    producerAddress: producerAddress,
+                    network: network,
+                    theme: theme,
+                    language: 'tr',
+                    debug: true
+                });
+
+                await ecosystem.createSalesWidget('sales-widget-container', {
+                    showHeader: true,
+                    showPlanComparison: true,
+                    enablePurchase: true
+                });
+
+                // Show success message
+                showSuccessMessage('🎉 Sales widget initialized successfully!');
+
+                console.log('✅ Sales widget ready for production');
+
+            } catch (error) {
+                console.error('❌ Widget initialization failed:', error);
+                
+                const container = document.getElementById('sales-widget-container');
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #dc2626;">
+                        <h3>❌ Initialization Failed</h3>
+                        <p>${error.message}</p>
+                        <button class="btn btn-primary" onclick="initializeSalesWidget()" style="margin-top: 15px;">
+                            Try Again
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function generateIntegrationCode() {
+            const producerAddress = document.getElementById('producerAddress').value;
+            const network = document.getElementById('network').value;
+            const theme = document.getElementById('theme').value;
+
+            if (!producerAddress) {
+                alert('Please enter your Producer address first');
+                return;
+            }
+
+            const integrationCode = `
+<!-- Blicence Sales Widget Integration -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blockchain Services</title>
+</head>
+<body>
+    <!-- Widget Container -->
+    <div id="blicence-sales-widget"></div>
+
+    <!-- Blicence Scripts -->
+    <script src="https://cdn.blicence.com/core/blockchain-manager-v2.js"></script>
+    <script src="https://cdn.blicence.com/widgets/blicence-widget-sdk.js"></script>
+    <script src="https://cdn.blicence.com/blicence-ecosystem.js"></script>
+
+    <script>
+        // Initialize Blicence Ecosystem
+        async function initBlicence() {
+            const ecosystem = new BlicenceEcosystem({
+                producerAddress: '${producerAddress}',
+                network: '${network}',
+                theme: '${theme}',
+                language: 'tr'
+            });
+
+            await ecosystem.createSalesWidget('blicence-sales-widget', {
+                showHeader: true,
+                showPlanComparison: true,
+                enablePurchase: true
+            });
+
+            // Handle purchase events
+            ecosystem.on('blicence:purchase:completed', (data) => {
+                console.log('Purchase completed:', data);
+                // Add your custom logic here
+                // e.g., send confirmation email, update database, etc.
+            });
+
+            ecosystem.on('blicence:purchase:failed', (data) => {
+                console.log('Purchase failed:', data);
+                // Handle failed purchases
+            });
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', initBlicence);
+    </script>
+</body>
+</html>
+            `;
+
+            const codeContainer = document.getElementById('integration-code');
+            codeContainer.style.display = 'block';
+            codeContainer.innerHTML = `
+                <div class="code-block">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <strong>Your Integration Code:</strong>
+                        <button onclick="copyToClipboard()" style="background: #374151; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">
+                            Copy
+                        </button>
+                    </div>
+                    <pre style="margin: 0; white-space: pre-wrap;">${integrationCode}</pre>
+                </div>
+            `;
+
+            showSuccessMessage('🎉 Integration code generated! Copy and paste it into your website.');
+        }
+
+        function copyToClipboard() {
+            const codeText = document.querySelector('#integration-code pre').textContent;
+            navigator.clipboard.writeText(codeText).then(() => {
+                alert('Integration code copied to clipboard!');
+            });
+        }
+
+        function showSuccessMessage(message) {
+            const existingMessage = document.querySelector('.success-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.textContent = message;
+
+            const container = document.querySelector('.content');
+            container.insertBefore(successDiv, container.firstChild);
+
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                successDiv.remove();
+            }, 5000);
+        }
+
+        // Auto-generate code when Producer address is entered
+        document.getElementById('producerAddress').addEventListener('blur', function() {
+            if (this.value && this.value.startsWith('0x')) {
+                // Could auto-generate code here if desired
+            }
+        });
+    </script>
+</body>
+</html>
