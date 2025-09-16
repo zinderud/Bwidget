@@ -487,140 +487,207 @@
     <script src="https://cdn.blicence.com/bundles/blicence-sales-widget.min.js"></script>
     
     <script>
-        // Widget yüklendiğinde
+        // Widget yüklendiğinde özel event listeners
         window.addEventListener('blicence:loaded', function(event) {
-            console.log('💪 FitLife Gym widget yüklendi:', event.detail);
+            console.log('🏋️ PowerGym widget yüklendi:', event.detail);
+            
+            // Google Analytics integration
+            if (window.gtag) {
+                gtag('event', 'widget_loaded', {
+                    'custom_parameter': 'powergym_fitness'
+                });
+            }
         });
 
-        // Paket seçimi tracking
+        // Plan seçimi event listener
         document.addEventListener('blicence:planSelected', function(event) {
             const plan = event.detail;
-            console.log('🏋️‍♂️ Paket seçildi:', plan.name);
+            console.log('💪 Plan seçildi:', plan.name);
             
-            // Show plan details in a modal or toast
-            showPlanDetails(plan);
+            // Conversion tracking
+            if (window.gtag) {
+                gtag('event', 'plan_selected', {
+                    'plan_id': plan.id,
+                    'plan_name': plan.name,
+                    'plan_price': plan.price
+                });
+            }
         });
 
-        // Satın alma başlangıcı
+        // Widget wallet bağlantısı başladı
+        document.addEventListener('blicence:walletConnecting', function(event) {
+            console.log('🔗 Wallet bağlantısı başlıyor...');
+            document.body.style.cursor = 'wait';
+            
+            // Optional: Show connecting state in UI
+            showConnectingState();
+        });
+
+        // Widget wallet bağlandı
+        document.addEventListener('blicence:walletConnected', function(event) {
+            const { address, network } = event.detail;
+            console.log('✅ Wallet bağlandı:', address, 'Network:', network);
+            document.body.style.cursor = 'default';
+            
+            // Optional: Show connected state
+            showConnectedState(address);
+        });
+
+        // Satın alma işlemi başladı (widget tarafından yönetiliyor)
         document.addEventListener('blicence:purchaseStart', function(event) {
             const plan = event.detail;
-            console.log('💳 Paket satın alma başladı:', plan.name);
+            console.log('💳 Satın alma başladı:', plan.name);
             
-            // Show loading indicator
-            showLoadingOverlay('Blockchain işlemi gerçekleştiriliyor...');
+            // Show loading state
+            showPurchaseLoading('Blockchain işlemi gerçekleştiriliyor...');
         });
 
         // Satın alma tamamlandı
         document.addEventListener('blicence:purchaseComplete', function(event) {
-            const { plan, txHash } = event.detail;
-            console.log('✅ Paket satın alma tamamlandı!', plan.name);
+            const { plan, txHash, nftTokenId } = event.detail;
+            console.log('✅ Satın alma tamamlandı!', plan.name, txHash);
             
-            hideLoadingOverlay();
+            hidePurchaseLoading();
             
-            // Show success message with gym-specific content
-            showSuccessMessage(plan, txHash);
+            // Show success modal with NFT details
+            showSuccessModal({
+                plan: plan,
+                txHash: txHash,
+                nftTokenId: nftTokenId
+            });
             
-            // Redirect to member area
-            setTimeout(() => {
-                window.location.href = '/member-dashboard?package=' + plan.id;
-            }, 3000);
+            // Analytics tracking
+            if (window.gtag) {
+                gtag('event', 'purchase', {
+                    transaction_id: txHash,
+                    value: parseFloat(plan.price),
+                    currency: 'USD',
+                    items: [{
+                        item_id: plan.id,
+                        item_name: plan.name,
+                        category: 'fitness',
+                        quantity: 1,
+                        price: parseFloat(plan.price)
+                    }]
+                });
+            }
         });
 
-        // Error handling
+        // Hata durumu
         document.addEventListener('blicence:error', function(event) {
             const error = event.detail;
-            console.error('❌ FitLife Gym widget hatası:', error);
+            console.error('❌ Widget hatası:', error);
             
-            hideLoadingOverlay();
-            showErrorMessage(error.message);
+            document.body.style.cursor = 'default';
+            hidePurchaseLoading();
+            showError('Bir hata oluştu: ' + error.message);
         });
 
-        // Helper functions
-        function showPlanDetails(plan) {
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                background: rgba(0,0,0,0.8); display: flex; align-items: center;
-                justify-content: center; z-index: 10000;
-            `;
-            
-            modal.innerHTML = `
-                <div style="background: white; padding: 30px; border-radius: 16px; max-width: 400px; text-align: center;">
-                    <h3 style="color: #ff6b6b; margin-bottom: 15px;">🏋️‍♂️ ${plan.name}</h3>
-                    <p style="color: #718096; margin-bottom: 20px;">${plan.description || 'Seçtiğiniz paketi onaylayın'}</p>
-                    <div style="font-size: 1.5rem; font-weight: bold; color: #2d3748; margin-bottom: 20px;">
-                        ${plan.price} ${plan.currency}
-                    </div>
-                    <button onclick="this.closest('div').style.display='none'" 
-                            style="background: #ff6b6b; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
-                        Anladım
-                    </button>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-            modal.onclick = (e) => e.target === modal && modal.remove();
+        // UI Helper Functions
+        function showConnectingState() {
+            // Optional: Show wallet connecting indicator
+            console.log('💫 Wallet bağlantısı göstergesi');
         }
 
-        function showLoadingOverlay(message) {
-            const overlay = document.createElement('div');
-            overlay.id = 'fitlife-loading';
-            overlay.style.cssText = `
-                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                background: rgba(0,0,0,0.9); display: flex; align-items: center;
-                justify-content: center; z-index: 10000; color: white; text-align: center;
-            `;
-            
-            overlay.innerHTML = `
-                <div>
-                    <div style="width: 50px; height: 50px; border: 4px solid #ff6b6b; border-top: 4px solid transparent; 
-                                border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
-                    <div style="font-size: 1.2rem;">${message}</div>
+        function showConnectedState(address) {
+            // Optional: Show connected wallet address
+            console.log('🟢 Bağlı wallet:', address.substring(0, 6) + '...');
+        }
+
+        function showPurchaseLoading(message) {
+            const modal = document.createElement('div');
+            modal.id = 'purchaseLoadingModal';
+            modal.innerHTML = `
+                <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; display: flex; align-items: center; justify-content: center;">
+                    <div style="background: white; border-radius: 16px; padding: 30px; text-align: center; max-width: 400px; margin: 20px;">
+                        <div style="font-size: 3rem; margin-bottom: 20px;">⏳</div>
+                        <h3 style="color: #2d3748; margin-bottom: 15px;">İşlem Gerçekleştiriliyor</h3>
+                        <p style="color: #666; margin-bottom: 20px;">${message}</p>
+                        <div style="width: 100%; height: 4px; background: #e2e8f0; border-radius: 2px; overflow: hidden;">
+                            <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #ff6b6b, #ffa726); animation: pulse 2s ease-in-out infinite;"></div>
+                        </div>
+                    </div>
                 </div>
                 <style>
-                    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+                    @keyframes pulse {
+                        0%, 100% { opacity: 1; }
+                        50% { opacity: 0.5; }
+                    }
                 </style>
             `;
-            
-            document.body.appendChild(overlay);
-        }
-
-        function hideLoadingOverlay() {
-            const overlay = document.getElementById('fitlife-loading');
-            if (overlay) overlay.remove();
-        }
-
-        function showSuccessMessage(plan, txHash) {
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                background: rgba(0,0,0,0.8); display: flex; align-items: center;
-                justify-content: center; z-index: 10000;
-            `;
-            
-            modal.innerHTML = `
-                <div style="background: white; padding: 40px; border-radius: 16px; max-width: 500px; text-align: center;">
-                    <div style="font-size: 3rem; margin-bottom: 20px;">🎉</div>
-                    <h2 style="color: #ff6b6b; margin-bottom: 15px;">Hoşgeldiniz FitLife Gym'e!</h2>
-                    <p style="color: #718096; margin-bottom: 20px;">
-                        <strong>${plan.name}</strong> paketiniz başarıyla aktifleştirildi.
-                        Şimdi spor yapmaya başlayabilirsiniz!
-                    </p>
-                    <div style="background: #f7fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <small style="color: #718096;">Transaction: ${txHash.substring(0, 20)}...</small>
-                    </div>
-                    <p style="color: #718096; font-size: 0.9rem;">
-                        Üye paneline yönlendiriliyorsunuz...
-                    </p>
-                </div>
-            `;
-            
             document.body.appendChild(modal);
         }
 
-        function showErrorMessage(message) {
-            alert('❌ Hata: ' + message + '\n\nLütfen tekrar deneyin veya bizimle iletişime geçin.');
+        function hidePurchaseLoading() {
+            const modal = document.getElementById('purchaseLoadingModal');
+            if (modal && modal.parentNode) {
+                modal.parentNode.removeChild(modal);
+            }
         }
+
+        function showSuccessModal(details) {
+            const modal = document.createElement('div');
+            modal.innerHTML = `
+                <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; display: flex; align-items: center; justify-content: center;">
+                    <div style="background: white; border-radius: 16px; padding: 30px; text-align: center; max-width: 500px; margin: 20px; color: #2d3748;">
+                        <div style="font-size: 4rem; margin-bottom: 20px;">🏆</div>
+                        <h2 style="color: #ff6b6b; margin-bottom: 15px;">Güçlü Başlangıç!</h2>
+                        <p style="margin-bottom: 20px;">${details.plan.name} üyeliğinizi başarıyla satın aldınız!</p>
+                        
+                        <div style="background: #f7fafc; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                            <h4 style="margin-bottom: 10px;">🎫 NFT Üyelik Kartı</h4>
+                            <p style="font-family: monospace; font-size: 0.8rem; color: #666;">Token ID: #${details.nftTokenId || 'AUTO_GENERATED'}</p>
+                            <p style="font-family: monospace; font-size: 0.8rem; color: #666;">TX: ${details.txHash ? details.txHash.substring(0, 20) + '...' : 'PROCESSING...'}</p>
+                        </div>
+                        
+                        <div style="background: #fef5e7; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                            <h4 style="margin-bottom: 10px; color: #d69e2e;">🔑 Spor Salonu Erişimi</h4>
+                            <p style="color: #996e09;">💪 24/7 Sınırsız Giriş</p>
+                            <p style="color: #996e09;">🏋️‍♂️ Tüm Ekipman Erişimi</p>
+                            <p style="color: #996e09;">👨‍🏫 Kişisel Antrenör Desteği</p>
+                            <p style="color: #996e09;">📱 PowerGym Mobil Uygulaması</p>
+                        </div>
+                        
+                        <div style="background: #e6fffa; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                            <h4 style="margin-bottom: 10px; color: #067a46;">📱 QR Kod ile Giriş</h4>
+                            <p style="color: #047857;">NFT'nizle oluşturulan QR kod ile spor salonumuza giriş yapabilirsiniz</p>
+                        </div>
+                        
+                        <button onclick="window.location.href='https://app.powergym.com/checkin?token=${details.nftTokenId || 'demo'}'; this.closest('div').parentNode.remove();" 
+                                style="background: #ff6b6b; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; margin-right: 10px;">
+                            🏋️‍♂️ Spora Başla
+                        </button>
+                        <button onclick="this.closest('div').parentNode.remove();" 
+                                style="background: #e2e8f0; color: #4a5568; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                            Kapat
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function showError(message) {
+            const modal = document.createElement('div');
+            modal.innerHTML = `
+                <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; display: flex; align-items: center; justify-content: center;">
+                    <div style="background: white; border-radius: 16px; padding: 30px; text-align: center; max-width: 400px; margin: 20px; color: #2d3748;">
+                        <div style="font-size: 3rem; margin-bottom: 20px;">❌</div>
+                        <h3 style="color: #e53e3e; margin-bottom: 15px;">İşlem Başarısız</h3>
+                        <p style="margin-bottom: 20px; word-wrap: break-word;">${message}</p>
+                        <button onclick="this.closest('div').parentNode.remove();" 
+                                style="background: #e53e3e; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                            Tamam
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        console.log('🏋️‍♂️ PowerGym - Widget-managed blockchain integration ready!');
+        console.log('💳 Wallet connection handled by widget');
+        console.log('🎫 NFT-based gym membership system activated');
     </script>
 </body>
 </html>
